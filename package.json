@@ -11,5 +11,8 @@
     "url": "git+https://github.com/AndreiAgmata/fragments.git"
   },
   "author": "Andrei Agmata",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "prettier": "3.0.3"
+  }
 }
