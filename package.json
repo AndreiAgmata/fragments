@@ -20,5 +20,10 @@
     "eslint-plugin-n": "^16.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "prettier": "3.0.3"
+  },
+  "dependencies": {
+    "pino": "^8.15.1",
+    "pino-http": "^8.5.0",
+    "pino-pretty": "^10.2.0"
   }
 }
