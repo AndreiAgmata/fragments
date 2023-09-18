@@ -26,8 +26,16 @@ app.use(helmet());
 // Use CORS middleware so we can make requests across origins
 app.use(cors());
 
+const passport = require('passport');
+
+const authenticate = require('./auth');
+
 // Use gzip/deflate compression middleware
 app.use(compression());
+
+// Set up our passport authentication middleware
+passport.use(authenticate.strategy());
+app.use(passport.initialize());
 
 // modifications to src/app.js
 
