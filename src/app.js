@@ -5,6 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 
+const { createErrorResponse } = require('./response');
+
 // author and version from our package.json file
 // const { author, version } = require('../package.json');
 
@@ -46,13 +48,15 @@ app.use('/', require('./routes'));
 
 // Add 404 middleware to handle any requests for resources that can't be found
 app.use((req, res) => {
-  res.status(404).json({
-    status: 'error',
-    error: {
-      message: 'not found',
-      code: 404,
-    },
-  });
+  res.status(404).json(
+    createErrorResponse({
+      status: 'error',
+      error: {
+        message: 'not found',
+        code: 404,
+      },
+    })
+  );
 });
 
 // Add error-handling middleware to deal with anything else
