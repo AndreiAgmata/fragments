@@ -9,7 +9,7 @@ const { Fragment } = require('../../model/fragment');
  */
 
 module.exports = async (req, res) => {
-  logger.debug('POST: {' + 'User: ' + req.user + ' Body: ' + req.body + '}');
+  logger.info('POST: {' + 'User: ' + req.user + ' Body: ' + req.body + '}');
 
   const contentType = req.headers['content-type'];
 
