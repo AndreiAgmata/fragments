@@ -49,7 +49,7 @@ ENV NPM_CONFIG_COLOR=false
 # CMD npm start
 ######LAB 7 CHANGES########
 
-# Multi-Stage Builds
+# Multi-Stage Builds Lab 6
 
 FROM node:18.13.0
 
