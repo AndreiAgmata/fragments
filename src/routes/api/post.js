@@ -22,8 +22,8 @@ module.exports = async (req, res) => {
       try {
         await fragment.setData(req.body);
         await fragment.save();
-        res.set('Location', `http://${req.headers.host}/v1/fragments/${fragment.id}`);
-        //res.set('Location', `${process.env.API_URL}/v1/fragments/${fragment.id}`);
+        //res.set('Location', `http://${req.headers.host}/v1/fragments/${fragment.id}`);
+        res.set('Location', `${process.env.API_URL}/v1/fragments/${fragment.id}`);
 
         let msg = { fragment: fragment };
         let response = createSuccessResponse(msg);
