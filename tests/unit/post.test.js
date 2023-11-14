@@ -38,7 +38,7 @@ describe('POST /v1/fragments', () => {
     const res = await request(app)
       .post('/v1/fragments', fragment)
       .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/markdown');
+      .set('Content-Type', 'image/png');
 
     expect(res.statusCode).toBe(415);
     expect(res.body.status).toBe('error');

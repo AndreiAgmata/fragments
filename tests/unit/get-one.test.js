@@ -2,6 +2,7 @@
 
 const request = require('supertest');
 const app = require('../../src/app');
+var path = require('path');
 
 describe('GET /v1/fragments/:id', () => {
   // If the request is missing the Authorization header, it should be forbidden
@@ -16,20 +17,54 @@ describe('GET /v1/fragments/:id', () => {
       .expect(401));
 
   // Using a valid username/password pair should give a success result and allow user to get data
-  test('authenticated users can get a fragment data', async () => {
+  test('authenticated users can get a html fragment data', async () => {
     const res = await request(app)
       .post('/v1/fragments')
-      .set('Content-Type', 'text/plain')
+      .set('Content-Type', 'text/html')
       .auth('user1@email.com', 'password1')
-      .send('Test Fragment');
+      .send(path.resolve('../testFiles/test.html'));
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
 
     const get = await request(app)
-      .get(`/v1/fragments/${res.body.fragment.id}`)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
       .auth('user1@email.com', 'password1');
     expect(get.statusCode).toBe(200);
+  });
+
+  // Using a valid username/password pair should give a success result and allow user to get data
+  test('authenticated users can get a md fragment converted to html', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/markdown')
+      .auth('user1@email.com', 'password1')
+      .send(path.resolve('../testFiles/test.md'));
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(200);
+  });
+
+  // Using a valid username/password pair but invalid extension should not give a success result
+  test('authenticated users can get a md fragment converted to html', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/markdown')
+      .auth('user1@email.com', 'password1')
+      .send(path.resolve('../testFiles/test.md'));
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(415);
   });
 
   // Using a valid username/password pair but invalid ID should give an error

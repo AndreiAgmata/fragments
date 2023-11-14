@@ -29,6 +29,7 @@ module.exports = async (req, res) => {
         let response = createSuccessResponse(msg);
         res.status(201).json(response);
       } catch (err) {
+        res.status(500).json(createErrorResponse(500, 'Unable to post fragment'));
         logger.error({ err }, 'Unable to POST fragment');
       }
     } else {

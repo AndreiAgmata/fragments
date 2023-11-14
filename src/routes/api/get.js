@@ -9,10 +9,10 @@ const logger = require('../../logger');
 module.exports = async (req, res) => {
   // TODO: this is just a placeholder to get something working...
   try {
-    logger.info('Getting fragments by user');
-    let expand = req.query.expand;
+    logger.debug('Getting fragments by user');
+    let expand = req.query.expand === 1;
 
-    if (expand == 1) {
+    if (expand === 1) {
       const fragments = await Fragment.byUser(req.user, true);
       res.status(200).json(createSuccessResponse({ fragments: fragments }));
     } else {
@@ -26,6 +26,6 @@ module.exports = async (req, res) => {
       res.status(200).json(response);
     }
   } catch (err) {
-    res.status(401).json(createErrorResponse(401, err));
+    res.status(500).json(createErrorResponse(500, err));
   }
 };

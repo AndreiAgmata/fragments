@@ -146,7 +146,7 @@ class Fragment {
   get formats() {
     // TODO
 
-    let formats = ['text/plain'];
+    let formats = ['text/plain', 'text/markdown', 'text/html', 'application/json'];
 
     return formats;
   }
@@ -159,7 +159,13 @@ class Fragment {
   static isSupportedType(value) {
     // TODO
 
-    if (value === 'text/plain' || value === 'text/plain; charset=utf-8') {
+    if (
+      value === 'text/plain' ||
+      value === 'text/plain; charset=utf-8' ||
+      value === 'text/markdown' ||
+      value === 'text/html' ||
+      value === 'application/json'
+    ) {
       return true;
     } else {
       return false;
