@@ -27,12 +27,8 @@
       "cpu": 256,
       "environment": [
         {
-          "name": "AWS_COGNITO_CLIENT_ID",
-          "value": "3afu10mrm8rns96pj94v4rgce8"
-        },
-        {
-          "name": "AWS_COGNITO_POOL_ID",
-          "value": "us-east-1_2GuCfRfTs"
+          "name": "API_URL",
+          "value": "http://localhost:8080"
         },
         {
           "name": "AWS_S3_ENDPOINT_URL",
@@ -43,7 +39,7 @@
           "value": "tests/.htpasswd"
         },
         {
-          "name": "PORT",
+          "name": "PORT ",
           "value": "8080"
         }
       ],
@@ -82,7 +78,7 @@
   "memory": "512",
   "taskRoleArn": null,
   "compatibilities": ["EC2", "FARGATE"],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:511995718951:task-definition/fragments-task:5",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:511995718951:task-definition/fragments-task:6",
   "family": "fragments-task",
   "requiresAttributes": [
     {
@@ -127,7 +123,7 @@
   "networkMode": "awsvpc",
   "runtimePlatform": null,
   "cpu": "256",
-  "revision": 5,
+  "revision": 6,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
