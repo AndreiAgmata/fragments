@@ -36,7 +36,7 @@
         },
         {
           "name": "HTPASSWD_FILE",
-          "value": "tests/.htpasswd   "
+          "value": "tests/.htpasswd"
         },
         {
           "name": "PORT",
@@ -82,7 +82,7 @@
   "memory": "512",
   "taskRoleArn": "arn:aws:iam::511995718951:role/LabRole",
   "compatibilities": ["EC2", "FARGATE"],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:511995718951:task-definition/fragments-task:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:511995718951:task-definition/fragments-task:5",
   "family": "fragments-task",
   "requiresAttributes": [
     {
@@ -127,7 +127,7 @@
   "networkMode": "awsvpc",
   "runtimePlatform": null,
   "cpu": "256",
-  "revision": 1,
+  "revision": 5,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
