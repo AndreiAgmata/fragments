@@ -27,8 +27,12 @@
       "cpu": 256,
       "environment": [
         {
-          "name": "API_URL",
-          "value": "http://localhost:8080"
+          "name": "AWS_COGNITO_CLIENT_ID",
+          "value": "3afu10mrm8rns96pj94v4rgce8"
+        },
+        {
+          "name": "AWS_COGNITO_POOL_ID",
+          "value": "us-east-1_2GuCfRfTs"
         },
         {
           "name": "AWS_S3_ENDPOINT_URL",
@@ -41,10 +45,6 @@
         {
           "name": "PORT",
           "value": "8080"
-        },
-        {
-          "name": "AWS_S3_BUCKET_NAME",
-          "value": "aagmata-fragments"
         }
       ],
       "resourceRequirements": null,
