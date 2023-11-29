@@ -27,10 +27,6 @@
       "cpu": 256,
       "environment": [
         {
-          "name": "API_URL",
-          "value": "http://localhost:8080"
-        },
-        {
           "name": "AWS_S3_ENDPOINT_URL",
           "value": "http://localhost:4566"
         },
