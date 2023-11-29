@@ -35,10 +35,6 @@
           "value": "http://localhost:4566"
         },
         {
-          "name": "HTPASSWD_FILE",
-          "value": "tests/.htpasswd"
-        },
-        {
           "name": "PORT",
           "value": "8080"
         },
