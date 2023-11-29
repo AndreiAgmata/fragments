@@ -27,16 +27,8 @@
       "cpu": 256,
       "environment": [
         {
-          "name": "AWS_S3_ENDPOINT_URL",
-          "value": "http://localhost:4566"
-        },
-        {
           "name": "PORT",
           "value": "8080"
-        },
-        {
-          "name": "AWS_S3_BUCKET_NAME",
-          "value": "aagmata-fragments"
         }
       ],
       "resourceRequirements": null,
