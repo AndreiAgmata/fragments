@@ -166,33 +166,25 @@ async function listFragments(ownerId, expand = false) {
 }
 
 async function deleteFragment(ownerId, id) {
-  // Create the DELETE API params from our details
   const s3params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    // Our key will be a mix of the ownerID and fragment id, written as a path
+
     Key: `${ownerId}/${id}`,
   };
-
-  // Create a DEL Object command to send to S3
   const s3command = new DeleteObjectCommand(s3params);
 
-  // Create the DELETE API dynamodb params from our details
   const params = {
     TableName: process.env.AWS_DYNAMODB_TABLE_NAME,
     Key: { ownerId, id },
   };
 
-  // Create a DEL Object command to send to S3
   const command = new DeleteCommand(params);
 
   try {
-    // Use our client to send the command
-    // return await ddbDocClient.send(command);
     return await Promise.all([ddbDocClient.send(command), s3Client.send(s3command)]);
   } catch (err) {
     const { Bucket, Key } = params;
     logger.warn({ err, params }, 'error deleting fragment from DynamoDB');
-    // If anything goes wrong, log enough info that we can debug
     logger.error({ err, Bucket, Key }, 'Error deleting fragment data to S3');
     throw new Error('unable to deleting fragment data');
   }
