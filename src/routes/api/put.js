@@ -6,9 +6,9 @@ module.exports = async (req, res) => {
   logger.info('PUT: {' + 'User: ' + req.user + ' Body: ' + req.body + '}');
   const incomingContentType = req.headers['content-type'];
 
-  try {
-    const fragmentToBeUpdated = await Fragment.byId(req.user, req.params.id);
+  const fragmentToBeUpdated = await Fragment.byId(req.user, req.params.id);
 
+  try {
     if (fragmentToBeUpdated) {
       if (fragmentToBeUpdated.type == incomingContentType) {
         await fragmentToBeUpdated.setData(req.body);
