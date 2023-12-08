@@ -13,10 +13,6 @@ module.exports = async (req, res) => {
   try {
     logger.info('Getting fragment by id');
     const fragmentFound = await Fragment.byId(req.user, req.params.id);
-    // const data = await fragment.getData();
-    // res.setHeader('Content-Type', 'text/plain');
-    // res.status(200).send(data);
-
     const fragment = new Fragment({
       id: fragmentFound.id,
       ownerId: fragmentFound.ownerId,
@@ -27,7 +23,6 @@ module.exports = async (req, res) => {
     });
 
     if (Fragment.isSupportedType(fragment.type)) {
-      //conversion for .html ext
       if (req.params.ext === 'html') {
         if (fragment.type === 'text/markdown' || fragment.type === 'text/html') {
           const getData = await fragment.getData();
@@ -37,8 +32,7 @@ module.exports = async (req, res) => {
         } else {
           res.status(415).json(createErrorResponse(415, 'Unable to convert to .html format'));
         }
-        //conversion for .txt ext
-      } else if (req.params.ext === '.txt') {
+      } else if (req.params.ext === 'txt') {
         if (
           fragment.type === 'text/plain' ||
           fragment.type === 'text/markdown' ||
