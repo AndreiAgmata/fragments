@@ -38,7 +38,7 @@ describe('POST /v1/fragments', () => {
     const res = await request(app)
       .post('/v1/fragments', fragment)
       .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'image/png');
+      .set('Content-Type', 'contentType/invalid');
 
     expect(res.statusCode).toBe(415);
     expect(res.body.status).toBe('error');
@@ -74,7 +74,9 @@ describe('POST /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.headers.location).toEqual(
-      `${process.env.API_URL}/v1/fragments/${JSON.parse(res.text).fragment.id}`
+      `http://ec2con-ecsel-vcwtviedsjql-1039224194.us-east-1.elb.amazonaws.com:8080/v1/fragments/${
+        JSON.parse(res.text).fragment.id
+      }`
     );
   });
 });

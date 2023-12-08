@@ -146,9 +146,17 @@ class Fragment {
   get formats() {
     // TODO
 
-    let formats = ['text/plain', 'text/markdown', 'text/html', 'application/json'];
-
-    return formats;
+    if (this.mimeType === 'text/plain') {
+      return ['text/plain'];
+    } else if (this.mimeType === 'text/markdown') {
+      return ['text/plain', 'text/markdown', 'text/html'];
+    } else if (this.mimeType === 'text/html') {
+      return ['text/plain', 'text/html'];
+    } else if (this.mimeType === 'application/json') {
+      return ['text/plain', 'application/json'];
+    } else {
+      return ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+    }
   }
 
   /**
@@ -159,17 +167,18 @@ class Fragment {
   static isSupportedType(value) {
     // TODO
 
-    if (
-      value === 'text/plain' ||
-      value === 'text/plain; charset=utf-8' ||
-      value === 'text/markdown' ||
-      value === 'text/html' ||
-      value === 'application/json'
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    let validType = [
+      'text/plain',
+      'text/plain; charset=utf-8',
+      'text/markdown',
+      'text/html',
+      'application/json',
+      'image/png',
+      'image/jpeg',
+      'image/webp',
+    ];
+
+    return validType.includes(value);
   }
 }
 

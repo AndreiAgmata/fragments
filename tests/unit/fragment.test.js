@@ -160,18 +160,13 @@ describe('Fragment class', () => {
   });
 
   describe('formats', () => {
-    test('formats returns the expected result for plain text', () => {
+    test('formats returns the expected result for valid formats', () => {
       const fragment = new Fragment({
         ownerId: '1234',
-        type: 'text/plain; charset=utf-8',
+        type: 'text/plain',
         size: 0,
       });
-      expect(fragment.formats).toEqual([
-        'text/plain',
-        'text/markdown',
-        'text/html',
-        'application/json',
-      ]);
+      expect(fragment.formats).toEqual(['text/plain']);
     });
   });
 
