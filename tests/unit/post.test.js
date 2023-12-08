@@ -73,10 +73,13 @@ describe('POST /v1/fragments', () => {
       .send('This is fragment');
 
     expect(res.statusCode).toBe(201);
-    expect(res.headers.location).toEqual(
-      `http://ec2con-ecsel-vcwtviedsjql-1039224194.us-east-1.elb.amazonaws.com:8080/v1/fragments/${
-        JSON.parse(res.text).fragment.id
-      }`
-    );
+
+    // Assuming the fragment ID is available in the response body as JSON
+    const fragmentId = JSON.parse(res.text).fragment.id;
+
+    // Construct the URL using the host from the response headers
+    const locationURL = `http://${res.req._headers.host}/v1/fragments/${fragmentId}`;
+
+    expect(res.headers.location).toEqual(locationURL);
   });
 });
