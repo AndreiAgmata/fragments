@@ -3,43 +3,38 @@ const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
 
 module.exports = async (req, res) => {
-  logger.info('PUT: {' + 'User: ' + req.user + ' Body: ' + req.body + '}');
-  const incomingContentType = req.headers['content-type'];
+  logger.info('Put: {' + 'User: ' + req.user + ' Body: ' + req.body + '}');
 
-  const fragmentToBeUpdated = await Fragment.byId(req.user, req.params.id);
-
+  if (!Buffer.isBuffer(req.body)) {
+    return res.status(415).json(createErrorResponse(415, 'Unsupported Media Type : Empty body'));
+  }
   try {
-    if (fragmentToBeUpdated) {
-      if (fragmentToBeUpdated.type == incomingContentType) {
-        await fragmentToBeUpdated.setData(req.body);
-
-        createSuccessResponse(
-          res.status(200).json({ status: 'ok', fragments: fragmentToBeUpdated })
-        );
-      } else {
-        //create error response, unable to update fragment with a different content type
-        createErrorResponse(
-          res.status(415).json({
-            status: 'error',
-            message: "A fragment's type can not be changed after it is created",
-          })
-        );
-      }
-    } else {
-      createErrorResponse(
-        res.status(404).json({
-          status: 'error',
-          message: 'Fragment not found',
-        })
-      );
+    const fragmentToUpdate = await Fragment.byId(req.user, req.params.id);
+    if (!fragmentToUpdate) {
+      return res.status(404).json(createErrorResponse(404, 'Fragment not found'));
     }
-  } catch (err) {
-    logger.error({ err }, 'Unable to update fragment');
-    createErrorResponse(
-      res.status(404).json({
-        status: 'error',
-        message: "A fragment's type can not be changed after it is created",
+    if (fragmentToUpdate.type !== req.get('content-type')) {
+      return res
+        .status(400)
+        .json(createErrorResponse(415, 'Unable to change fragment type after its been added'));
+    }
+    const fragment = new Fragment({
+      ownerId: req.user,
+      id: req.params.id,
+      created: fragmentToUpdate.created,
+      type: req.get('content-type'),
+    });
+    await fragment.save();
+    await fragment.setData(req.body);
+
+    res.set('content-type', fragment.type);
+    res.set('Location', `http://${req.headers.host}/v1/fragments/${fragment.id}`);
+    res.status(201).json(
+      createSuccessResponse({
+        fragment: fragment,
       })
     );
+  } catch (err) {
+    res.status(500).json(createErrorResponse(500, err.message));
   }
 };
