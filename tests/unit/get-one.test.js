@@ -54,15 +54,15 @@ describe('GET /v1/fragments/:id', () => {
   test('authenticated users can get a md fragment converted to html', async () => {
     const res = await request(app)
       .post('/v1/fragments')
-      .set('Content-Type', 'text/markdown')
+      .set('Content-Type', 'text/plain')
       .auth('user1@email.com', 'password1')
-      .send(path.resolve('../testFiles/test.md'));
+      .send('This is a test fragment');
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
 
     const get = await request(app)
-      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
       .auth('user1@email.com', 'password1');
     expect(get.statusCode).toBe(415);
   });
