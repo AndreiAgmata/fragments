@@ -51,7 +51,7 @@ ENV NPM_CONFIG_COLOR=false
 
 # Multi-Stage Builds Lab 6
 
-FROM node:18.13.0
+FROM node:18.17.1
 
 LABEL maintainer="Andrei Agmata <aagmata@myseneca.ca>"
 LABEL description="Fragments node.js microservice"
