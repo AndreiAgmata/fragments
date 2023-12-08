@@ -1,6 +1,7 @@
 const logger = require('../../logger');
 const { Fragment } = require('../../model/fragment');
 const { createErrorResponse } = require('../../response');
+const sharp = require('sharp');
 
 var MarkdownIt = require('markdown-it'),
   md = new MarkdownIt();
@@ -26,7 +27,7 @@ module.exports = async (req, res) => {
     });
 
     if (Fragment.isSupportedType(fragment.type)) {
-      //conversion for .html files
+      //conversion for .html ext
       if (req.params.ext === 'html') {
         if (fragment.type === 'text/markdown' || fragment.type === 'text/html') {
           const getData = await fragment.getData();
@@ -35,6 +36,57 @@ module.exports = async (req, res) => {
           res.status(200).send(data);
         } else {
           res.status(415).json(createErrorResponse(415, 'Unable to convert to .html format'));
+        }
+        //conversion for .txt ext
+      } else if (req.params.ext === '.txt') {
+        if (
+          fragment.type === 'text/plain' ||
+          fragment.type === 'text/markdown' ||
+          fragment.type === 'text/html' ||
+          fragment.type === 'application/json'
+        ) {
+          const data = await fragment.getData();
+          res.setHeader('Content-Type', 'text/plain');
+          res.status(200).send(data);
+        } else {
+          res.status(415).json(createErrorResponse(415, 'Unable convert to .txt format'));
+        }
+        //conversion for .md ext
+      } else if (req.params.ext === 'md') {
+        if (fragment.type === 'text/markdown') {
+          const data = await fragment.getData();
+          res.setHeader('Content-Type', 'text/markdown');
+          res.status(200).send(data);
+        } else {
+          res.status(415).json(createErrorResponse(415, 'Cannot convert to .md'));
+        }
+        //conversion for .json ext
+      } else if (req.params.ext === 'json') {
+        if (fragment.type === 'application/json') {
+          const data = await fragment.getData();
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send(data);
+        } else {
+          res.status(415).json(createErrorResponse(415, 'Cannot convert to .json'));
+        }
+        //conversion for .png .jpg .webp ext
+      } else if (
+        req.params.ext === 'png' ||
+        req.params.ext === 'jpg' ||
+        req.params.ext === 'webp'
+      ) {
+        if (
+          fragment.type === 'image/png' ||
+          fragment.type === 'image/jpeg' ||
+          fragment.type === 'image/webp'
+        ) {
+          const getData = await fragment.getData();
+          const data = await sharp(getData).toFormat(req.params.ext).toBuffer();
+          const fragmentType = 'image/' + req.params.ext;
+          res.setHeader('Content-Type', fragmentType);
+          res.status(200).send(data);
+        } else {
+          res.status(415).json(createErrorResponse(415, 'Cannot convert'));
         }
       }
       //if there is no specific extension
