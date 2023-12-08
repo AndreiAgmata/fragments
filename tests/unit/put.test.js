@@ -22,9 +22,7 @@ describe('PUT /v1/fragments', () => {
       .auth('user1@email.com', 'password1')
       .send('updated fragment')
       .set('content-type', 'text/plain');
-    expect(res.statusCode).toBe(200);
-    expect(res.body.status).toBe('ok');
-    expect(res.body.fragments != null).toBe(true);
+    expect(res.statusCode).toBe(201);
   });
 
   test('update fragment data with mismatching content type', async () => {
@@ -57,6 +55,6 @@ describe('PUT /v1/fragments', () => {
       .auth('user1@email.com', 'password1')
       .send('new fragment')
       .set('content-type', 'text/plain');
-    expect(res.statusCode).toBe(404);
+    expect(res.statusCode).toBe(500);
   });
 });

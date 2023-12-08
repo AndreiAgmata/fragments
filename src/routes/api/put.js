@@ -8,6 +8,7 @@ module.exports = async (req, res) => {
   if (!Buffer.isBuffer(req.body)) {
     return res.status(415).json(createErrorResponse(415, 'Unsupported Media Type : Empty body'));
   }
+
   try {
     const fragmentToUpdate = await Fragment.byId(req.user, req.params.id);
     if (!fragmentToUpdate) {
@@ -15,7 +16,7 @@ module.exports = async (req, res) => {
     }
     if (fragmentToUpdate.type !== req.get('content-type')) {
       return res
-        .status(400)
+        .status(415)
         .json(createErrorResponse(415, 'Unable to change fragment type after its been added'));
     }
     const fragment = new Fragment({

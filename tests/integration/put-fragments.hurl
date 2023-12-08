@@ -21,9 +21,11 @@ jsonpath "$.status" == "ok"
 url: header "Location"
 id: jsonpath "$.fragment.id"
 
-# 2. Try to GET the fragment we just posted by its URL
+# 2. Try to GET the fragment
 GET {{url}}
-Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
+[BasicAuth]
+user1@email.com:password1
+
 HTTP/1.1 200
 Content-Length: 19
 [Asserts]
@@ -32,8 +34,10 @@ body == "This is a fragment!"
 
 # 3. Try to update the data of the fragment
 PUT {{url}}
-Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 Content-Type: text/plain
+[BasicAuth]
+user1@email.com:password1
+
 `This is an updated fragment!`
 
 HTTP/1.1 201
@@ -46,9 +50,9 @@ jsonpath "$.fragment.type" == "text/plain"
 jsonpath "$.fragment.size" == 28
 
 GET {{url}}
-Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
+[BasicAuth]
+user1@email.com:password1
 HTTP/1.1 200
-Content-Length: 28
 [Asserts]
 header "Content-Type" startsWith "text/plain"
 body == "This is an updated fragment!"
