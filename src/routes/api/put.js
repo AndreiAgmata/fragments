@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const fragmentToBeUpdated = await Fragment.byId(req.user, req.params.id);
 
     if (fragmentToBeUpdated) {
-      if (fragmentToBeUpdated.mimeType == incomingContentType) {
+      if (fragmentToBeUpdated.type == incomingContentType) {
         await fragmentToBeUpdated.setData(req.body);
 
         createSuccessResponse(
