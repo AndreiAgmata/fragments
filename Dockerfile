@@ -2,7 +2,7 @@
 
 #Every Dockerfile must begin with a FROM instruction
 # Use node version 18.13.0
-FROM node:18.13.0
+FROM node:18.17.1
 
 LABEL maintainer="Andrei Agmata <aagmata@myseneca.ca>"
 LABEL description="Fragments node.js microservice"

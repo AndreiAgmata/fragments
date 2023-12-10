@@ -25,8 +25,8 @@ module.exports = async (req, res) => {
       created: fragmentToUpdate.created,
       type: req.get('content-type'),
     });
-    await fragment.save();
     await fragment.setData(req.body);
+    await fragment.save();
 
     res.set('content-type', fragment.type);
     res.set('Location', `http://${req.headers.host}/v1/fragments/${fragment.id}`);
