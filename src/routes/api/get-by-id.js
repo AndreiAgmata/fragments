@@ -67,6 +67,7 @@ module.exports = async (req, res) => {
       } else if (
         req.params.ext === 'png' ||
         req.params.ext === 'jpg' ||
+        req.params.ext === 'jpeg' ||
         req.params.ext === 'webp'
       ) {
         if (
@@ -93,12 +94,6 @@ module.exports = async (req, res) => {
       else {
         res.status(415).json(createErrorResponse(415, 'Unable to convert file'));
       }
-    }
-    //content type is not supported
-    else {
-      res
-        .status(415)
-        .json(createErrorResponse(415, 'Content type is not supported at this moment'));
     }
   } catch (err) {
     logger.error({ err }, 'Unable to find a fragment with matching ID');

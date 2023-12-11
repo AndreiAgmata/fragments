@@ -28,7 +28,7 @@ describe('GET /v1/fragments/:id', () => {
     expect(res.body.status).toBe('ok');
 
     const get = await request(app)
-      .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .get(`/v1/fragments/${res.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
     expect(get.statusCode).toBe(200);
   });
@@ -50,8 +50,71 @@ describe('GET /v1/fragments/:id', () => {
     expect(get.statusCode).toBe(200);
   });
 
+  test('authenticated users can get a md fragment converted to md', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/markdown')
+      .auth('user1@email.com', 'password1')
+      .send(path.resolve('../testFiles/test.md'));
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.md`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(200);
+  });
+
+  test('authenticated users can get a md fragment converted to text', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/markdown')
+      .auth('user1@email.com', 'password1')
+      .send(path.resolve('../testFiles/test.md'));
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(200);
+  });
+
+  test('authenticated users can get a json fragment converted to json', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'application/json')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.json`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(200);
+  });
+
+  test('authenticated users can get a html fragment converted to html', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/html')
+      .auth('user1@email.com', 'password1')
+      .send(path.resolve('../testFiles/test.html'));
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(200);
+  });
+
   // Using a valid username/password pair but invalid extension should not give a success result
-  test('authenticated users can get a md fragment converted to html', async () => {
+  test('fail converting fragment', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .set('Content-Type', 'text/plain')
@@ -63,6 +126,23 @@ describe('GET /v1/fragments/:id', () => {
 
     const get = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(get.statusCode).toBe(415);
+  });
+
+  // Using a valid username/password pair but unsupported should not give a success result
+  test('fail converting fragment', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'text/plain')
+      .auth('user1@email.com', 'password1')
+      .send('This is a test fragment');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+
+    const get = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.unsupported`)
       .auth('user1@email.com', 'password1');
     expect(get.statusCode).toBe(415);
   });
